@@ -21,14 +21,14 @@ def moving(board,dir,n):
                         if board[nr][nc] == 0:
                             board[nr][nc] = board[r][c]
                             board[r][c] = 0
-                            n,c = nr,nc
+                            r,c = nr,nc
                             continue
                         elif board[nr][nc] == board[r][c]:
                             if (nr,nc) not in check_:
                                 board[nr][nc] *=2
                                 board[r][c] = 0
-                                n,c = nr,nc
-                                check_.append((n,r))
+                                r,c = nr,nc
+                                check_.append((r,c))
                                 continue
                             else:
                                 break
@@ -49,14 +49,14 @@ def moving(board,dir,n):
                         if board[nr][nc] == 0:
                             board[nr][nc] = board[r][c]
                             board[r][c] = 0
-                            n,c = nr,nc
+                            r,c = nr,nc
                             continue
                         elif board[nr][nc] == board[r][c]:
                             if (nr,nc) not in check_:
                                 board[nr][nc] *=2
                                 board[r][c] = 0
-                                n,c = nr,nc
-                                check_.append((n,r))
+                                r,c = nr,nc
+                                check_.append((r,c))
                                 continue
                             else:
                                 break
@@ -77,14 +77,14 @@ def moving(board,dir,n):
                         if board[nr][nc] == 0:
                             board[nr][nc] = board[r][c]
                             board[r][c] = 0
-                            n,c = nr,nc
+                            r,c = nr,nc
                             continue
                         elif board[nr][nc] == board[r][c]:
                             if (nr,nc) not in check_:
                                 board[nr][nc] *=2
                                 board[r][c] = 0
-                                n,c = nr,nc
-                                check_.append((n,r))
+                                r,c = nr,nc
+                                check_.append((r,c))
                                 continue
                             else:
                                 break
@@ -105,14 +105,14 @@ def moving(board,dir,n):
                         if board[nr][nc] == 0:
                             board[nr][nc] = board[r][c]
                             board[r][c] = 0
-                            n,c = nr,nc
+                            r,c = nr,nc
                             continue
                         elif board[nr][nc] == board[r][c]:
                             if (nr,nc) not in check_:
                                 board[nr][nc] *=2
                                 board[r][c] = 0
-                                n,c = nr,nc
-                                check_.append((n,r))
+                                r,c = nr,nc
+                                check_.append((r,c))
                                 continue
                             else:
                                 break

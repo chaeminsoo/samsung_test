@@ -4,28 +4,29 @@ balls = []
 for i in range(n):
     c,s, = map(int,input().split())
     balls.append([i+1,c,s])
+    
+now_total = 0
+color_sum = [0]*n
+size_sum = {}
+ans = []
 
 balls.sort(key=lambda x:(x[2],x[1]))
-color_sum = [0]*(n+1)
-size_sum = {}
-ans = {}
-pre_num, pre_colour, pre_size = 0,0,0
-current_total = 0
-for ball in balls:
-    num, colour, size_ = ball
-    if pre_colour == colour and pre_size == size_:
-        ans[num] = ans[pre_num]
-        pre_num, pre_colour, pre_size = num, colour, size_
-        continue
 
-    current_total += size_
+for num, color_, size_ in balls:
+    ref = 0
+    ref += now_total
+    ref -= color_sum[color_-1]
+    try:
+        ref -= size_sum[size_]
+    except KeyError:
+        pass
+    ans.append([num,ref])
+    now_total += size_
+    color_sum[color_-1] += size_
     try:
         size_sum[size_] += size_
     except KeyError:
         size_sum[size_] = size_
-    color_sum[num] += size_
-
-    ans[num] = current_total - size_sum[size_] - color_sum[num] + size_
-    pre_num, pre_colour, pre_size = num, colour, size_
-
-print(ans)
+ans.sort()
+for a in ans:
+    print(a[1])

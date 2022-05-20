@@ -10,8 +10,8 @@ for _ in range(n):
 orders = list(map(int,input().split()))
 
 dice = [0,0,0,0,0,0]
-dr = [-1,1,0,0]
-dc = [0,0,-1,1]
+dr = [0,0,-1,1]
+dc = [1,-1,0,0]
 
 def dice_roll(dice,dir):
     u,d,h,t,l,r = dice
@@ -33,7 +33,6 @@ def reflect(dice,board,x,y):
     return dice[0],dice,board
 
 ans = []
-moving = []
 for order in orders:
     nx = x + dr[order-1]
     ny = y + dc[order-1]
@@ -42,9 +41,5 @@ for order in orders:
         aw, dice, board = reflect(dice,board,nx,ny)
         ans.append(aw)
         x,y = nx,ny
-    else:
-        ans.append('out')
-    moving.append((x,y))
-print(ans)
-print(dice)
-print(moving)
+for i in ans:
+    print(i)

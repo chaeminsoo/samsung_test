@@ -9,23 +9,23 @@ for _ in range(l):
 
 cursor_ = 0
 
-def c_bomb(cursor_):
-    global c, zombies
+def c_bomb(cursor_,c):
     for i in range(cursor_+1,cursor_+l):
         try:
             zombies[i] += mk
         except IndexError:
             pass
-    c-=1
+    return c-1
 live = True
 while cursor_ <= l:
     if cursor_ >= ml:
         damage = ml*mk
     else:
-        damage = ml*cursor_
+        damage = mk*cursor_
+        
     if damage < zombies[cursor_]:
         if c > 0:
-            c_bomb(cursor_)
+            c = c_bomb(cursor_,c)
             cursor_+=1
         else:
             live = False

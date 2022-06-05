@@ -1,38 +1,36 @@
 # 19644
+import sys
+input = sys.stdin.readline
+
 l = int(input())
 ml,mk = map(int,input().split())
-c = int(input())
+claymores = int(input())
 zombies = [0]
 for _ in range(l):
     z = int(input())
     zombies.append(z)
-
-cursor_ = 0
-
-def c_bomb(cursor_,c):
-    for i in range(cursor_+1,cursor_+l):
-        try:
-            zombies[i] += mk
-        except IndexError:
-            pass
-    return c-1
 live = True
-while cursor_ <= l:
-    if cursor_ >= ml:
-        damage = ml*mk
+claymores_hill = 0
+for idx, zombie in enumerate(zombies):
+    claymores_hill -= 1
+    if idx <= ml:
+        damage = idx*mk
     else:
-        damage = mk*cursor_
-        
-    if damage < zombies[cursor_]:
-        if c > 0:
-            c = c_bomb(cursor_,c)
-            cursor_+=1
+        damage = ml*mk
+    
+    if claymores_hill > 0:
+        damage -= mk
+
+    if zombie <= damage:
+        continue
+    else:
+        if claymores > 0:
+            claymores -= 1
+            claymores_hill = ml
         else:
             live = False
             break
-    else:
-        cursor_+=1
 if live:
-    print('Yes')
+    print('YES')
 else:
     print('NO')

@@ -18,7 +18,7 @@ def diffusion():
         for j in range(c):
             dust = board[i][j]
             new_d = dust//5
-            if new_d == 0:
+            if new_d <= 0:
                 continue
             cnt = 0
             for k in range(4):
@@ -66,12 +66,6 @@ def air_clean():
 
 for _ in range(t):
     nboard = diffusion()
-    print('===========1')
-    for i in board:
-        print(i)
-    print('===========2')
-    for i in nboard:
-        print(i)
     dust_sum(nboard)
     air_clean()
 
@@ -80,6 +74,3 @@ for i in range(r):
     for j in range(c):
         ans += board[i][j]
 print(ans+2)
-print('===')
-for i in board:
-    print(i)

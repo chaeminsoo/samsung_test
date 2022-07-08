@@ -1,74 +1,61 @@
 # 17142
 from itertools import combinations
+from collections import deque
 
 n,m = map(int,input().split())
-board = []
-virus = []
+board  = []
+virus  =[]
 for i in range(n):
-    info = list(map(int,input().split()))
+    data = list(map(int,input().split()))
     for j in range(n):
-        if info[j] == 2:
+        if data[j] == 2:
             virus.append((i,j))
-    board.append(info)
+    board.append(data)
 
 dx = [-1,1,0,0]
 dy = [0,0,-1,1]
 
-previous = [p[:] for p in board]
+def checking(b):
+    for i in range(n):
+        for j in range(n):
+            if b[i][j] == 0:
+                return False
+    return True
 
-def diffusion():
-    new_board = [[0]*n for _ in range(n)]
-    for i in range(n):
-        for j in range(n):
-            if board[i][j] == 3:
-                for k in range(k):
-                    nx = i + dx[k]
-                    ny = i + dy[k]
-                    if nx >= 0 and nx < n and ny >= 0 and ny < n and board[nx][ny] != 1 and board[nx][ny] != 3:
-                        new_board[nx][ny] = 3
-    for i in range(n):
-        for j in range(n):
-            if new_board[i][j] == 3:
-                board[i][j] = 3
-    if board == previous:
-        return True
+def bfs(g,virs):
+    if checking(g):
+        return 0
+    q = deque()
+    min_t = 0
+    visited = [[False]*n for _ in range(n)]
+    for v in virs:
+        r,c = v
+        g[r][c] = 3
+        q.append((r,c,0))
+        visited[r][c] = True
+    while q:
+        x,y,t = q.popleft()
+        min_t = max(min_t,t)
+
+        for i in range(4):
+            nx = x + dx[i]
+            ny = y + dy[i]
+            if nx >=0 and nx < n and ny >= 0 and ny < n and not visited[nx][ny] and g[nx][ny] != 1:
+                if g[nx][ny] == 2:
+                    q.append((nx,nx,t))
+                else:
+                    q.append((nx,nx,t+1))
+                visited[nx][ny] = True
+                g[nx][ny] = 3
+
+    if checking(g):
+        return min_t
     else:
-        previous = [p[:] for p in board]
-        return False
+        return -1
 
-def cheaking():
-    for i in range(n):
-        for j in range(n):
-            if board[i][j] == 0:
-                return True
-    return False
-# def dfs(a,b,c,cnt,swit,m):
-#     if swit:
-#         for i in range(n):
-#             for j in range(n):
-#                 if board[i][j] == 0:
-#                     return -1
-#             return cnt
-#     swit = diffusion()
-#     cnt += 1
-test_set = list(combinations(virus,m))
-chk = False
 ans = 1e9
-for i in test_set:
-    for j in i:
-        x,y = j
-        board[x][y] = 3
-    cnt = 0
-    if cheaking():
-        chk = True
-        break
-    while diffusion():
-        cnt += 1
-    
-    if chk:
-        ans = -1
-        break
-    else:
-        ans = min(ans,cnt)
+cases = combinations(virus,m)
+for case in cases:
+    ans = min(bfs([i[:] for i in board],case),ans)
 
 print(ans)

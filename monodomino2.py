@@ -9,32 +9,55 @@ green = [[0]*4 for _ in range(6)]
 blue = [[0]*4 for _ in range(6)]
 
 def green_blue(t,x,y):
-    if t == 0:
-        return t,x,y,t,y,x
-    elif t == 1:
-        return t,x,y,t+1,y,x
+    if t == 1:
+        return t,x,y,t,y,(3-x)
     elif t == 2:
-        return t,x,y,t-1,y,x
+        return t,x,y,t+1,y,(3-(x+1))
+    elif t == 3:
+        return t,x,y,t-1,y,(3-x)
 
 def block_shoot(board,t,x,y):
-    if t == 0:
-        for i in range(6):
-            if board[i][y] == 0 and (board[i+1][y] == 1 or i == 5):
-                board[i][y] = 1
+    if t == 1:
+        cursor_ = 0
+        while cursor_ <= 5:
+            if cursor_ == 5:
+                board[cursor_][y] = 1
                 break
-    elif t == 1:
-        for i in range(6):
-            if board[i][y] == 0 and board[i][y+1] == 0 and (i == 5 or board[i+1][y] == 1 or board[i+1][y+1] == 1): 
-                board[i][y] == 1
-                board[i][y+1] == 1
+            if board[cursor_+1][y] == 0:
+                cursor_+=1
+                continue
+            else:
+                board[cursor_][y] = 1
                 break
     elif t == 2:
-        for i in range(5):
-            if board[i][y] == 0 and board[i+1][y] == 0 and (i == 4 or board[i+2][y] == 1):
-                board[i][y] == 1
-                board[i+1][y] == 1
+        cursor_ = 0
+        while cursor_ <= 5:
+            if cursor_ == 5:
+                board[cursor_][y] = 1
+                board[cursor_][y+1] = 1
                 break
-    return
+            if board[cursor_+1][y] == 0 and board[cursor_+1][y+1] == 0:
+                cursor_+=1
+                continue
+            else:
+                board[cursor_][y] = 1
+                board[cursor_][y+1] = 1
+                break
+    elif t == 3:
+        cursor_ = 0
+        while cursor_ <= 5:
+            if cursor_ == 4:
+                board[cursor_][y] = 1
+                board[cursor_+1][y] = 1
+                break
+            if board[cursor_+2][y] == 0:
+                cursor_+=1
+                continue
+            else:
+                board[cursor_][y] = 1
+                board[cursor_+1][y] = 1
+                break
+    return board
 
 def block_clear1(board):
     cnt = 0
@@ -54,15 +77,18 @@ def block_clear2(board):
     for i in range(2):
         if sum(board[i]) >= 1:
             cnt += 1
-    new_board = [[0]*4 for _ in range(cnt)]
-    new_board += board[:-cnt]
-    return cnt, new_board
+    if cnt:
+        new_board = [[0]*4 for _ in range(cnt)]
+        new_board += board[:-cnt]
+        return cnt, new_board
+    else:
+        return cnt, board
 
 ans = 0
 for t,x,y in orders:
     gt,gx,gy, bt,bx,by = green_blue(t,x,y)
-    block_shoot(green,gt,gx,gy)
-    block_shoot(blue,bt,bx,by)
+    green = block_shoot(green,gt,gx,gy)
+    blue = block_shoot(blue,bt,bx,by)
     gnt,green = block_clear1(green)
     bnt,blue = block_clear1(blue)
     ans+=(gnt+bnt)
@@ -72,9 +98,9 @@ for t,x,y in orders:
 
 rslt = 0
 for i in green:
-    rslt += sum(green[i])
+    rslt += sum(i)
 for i in blue:
-    rslt += sum(blue[i])
+    rslt += sum(i)
 
 print(ans)
 print(rslt)

@@ -28,7 +28,6 @@ def bfs1(brd):
     local_visited[taxi[0]][taxi[1]] = True
     while q:
         x,y = q.popleft()
-
         for i in range(4):
             nx = x + dx[i]
             ny = y + dy[i]
@@ -62,7 +61,6 @@ def bfs2(brd,num):
     q.append((taxi[0],taxi[1]))
     while q:
         x,y = q.popleft()
-
         for i in range(4):
             nx = x + dx[i]
             ny = y + dy[i]
@@ -95,6 +93,7 @@ while cnt < m:
     else:
         ans = False
         break
+
 if ans:
     print(f)
 else:

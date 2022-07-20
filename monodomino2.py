@@ -12,10 +12,10 @@ def green_blue(t,x,y):
     if t == 1:
         return t,x,y,t,y,(3-x)
     elif t == 2:
-        return t,x,y,t+1,y,(3-(x+1))
+        return t,x,y,t+1,y,(3-x)
     elif t == 3:
-        return t,x,y,t-1,y,(3-x)
-
+        return t,x,y,t-1,y,(3-(x+1))
+    
 def block_shoot(board,t,x,y):
     if t == 1:
         cursor_ = 0
@@ -80,9 +80,9 @@ def block_clear2(board):
     if cnt:
         new_board = [[0]*4 for _ in range(cnt)]
         new_board += board[:-cnt]
-        return cnt, new_board
+        return new_board
     else:
-        return cnt, board
+        return board
 
 ans = 0
 for t,x,y in orders:
@@ -92,9 +92,8 @@ for t,x,y in orders:
     gnt,green = block_clear1(green)
     bnt,blue = block_clear1(blue)
     ans+=(gnt+bnt)
-    gnt,green = block_clear2(green)
-    bnt,blue = block_clear2(blue)
-    ans+=(gnt+bnt)
+    green = block_clear2(green)
+    blue = block_clear2(blue)
 
 rslt = 0
 for i in green:

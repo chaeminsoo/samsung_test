@@ -1,75 +1,54 @@
 # 16637
-from collections import deque
-
 n = int(input())
 data = input()
 exp = [i for i in data]
-print(exp)
 
-def cal(x,y,t):
-    if t == '+':
-        return str(int(x)+int(y))
-    if t == '-':
-        return str(int(x)-int(y))
-    if t == '*':
-        return str(int(x)*int(y))
+def cal(x,y,z):
+    if y == '+':
+        return str(int(x)+int(z))
+    if y == '-':
+        return str(int(x)-int(z))
+    if y == '*':
+        return str(int(x)*int(z))
 
 nums = [str(i) for i in range(10)]
-opers = ['+','-','*']
-
-def checking(exp):
-    return
-
-ans = 0
+ops = ['+','-','*']
+ans = -1e9
 def dfs(exp):
     global ans
     if ')' in exp[-3:]:
-        rslt = deque()
+        rslt = 0
         cursor_ = 0
         while cursor_ < len(exp):
-            if exp[cursor_] in nums or exp[cursor_] in opers:
-                rslt.append(exp[cursor_])
-            else:
-                ref_1 = []
+            if exp[cursor_] not in ops:
+                rslt += int(eval(exp[cursor_]))
                 cursor_+=1
-                while exp[cursor_] in nums or exp[cursor_] in opers:
-                    ref_1.append(exp[cursor_])
-                    cursor_+=1
-                ref_2 = cal(ref_1[0],ref_1[2],ref_1[1])
-                rslt.append(ref_2)
-        result = rslt.popleft()
-        while rslt:
-            op = rslt.popleft()
-            numnum = rslt.popleft()
-            result = cal(result,numnum,op)
-        ans = max(ans,int(result))
+            elif exp[cursor_] in ops:
+                rslt = cal(rslt,exp[cursor_],eval(exp[cursor_+1]))
+                cursor_+=2
+        ans = max(ans,int(rslt))
         return
-
+    
     for i in range(len(exp)):
-        if exp[i] in nums and exp[i+1] in opers and exp[i+2] in nums:
-            ref = exp[:]
-            exp.insert(i,'(')
-            exp.insert(i+4,')')
-            dfs(exp)
-            exp = ref[:]
-    rslt = deque()
+        try:
+            if exp[i] in nums and exp[i+1] in ops and exp[i+2] in nums:
+                ref = exp[:]
+                ref[i] = '('+ref[i]+ref[i+1]+ref[i+2]+')'
+                del ref[i+2]
+                del ref[i+1]
+                dfs(ref)
+        except IndexError:
+            break
+    rslt = 0
     cursor_ = 0
     while cursor_ < len(exp):
-        if exp[cursor_] in nums or exp[cursor_] in opers:
-            rslt.append(exp[cursor_])
-        else:
-            ref_1 = []
+        if exp[cursor_] not in ops:
+            rslt += int(eval(exp[cursor_]))
             cursor_+=1
-            while exp[cursor_] in nums or exp[cursor_] in opers:
-                ref_1.append(exp[cursor_])
-                cursor_+=1
-            ref_2 = cal(ref_1[0],ref_1[2],ref_1[1])
-            rslt.append(ref_2)
-    result = rslt.popleft()
-    while rslt:
-        op = rslt.popleft()
-        numnum = rslt.popleft()
-        result = cal(result,numnum,op)
-    ans = max(ans,int(result))
+        elif exp[cursor_] in ops:
+            rslt = cal(rslt,exp[cursor_],eval(exp[cursor_+1]))
+            cursor_+=2
+    ans = max(ans,int(rslt))
+    return
 dfs(exp)
 print(ans)

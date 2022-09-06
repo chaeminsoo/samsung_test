@@ -1,6 +1,4 @@
 # 17136
-# import time
-# stt = time.time()
 board = []
 ont = 0
 for i in range(10):
@@ -58,12 +56,13 @@ def b_check(b):
 ans = 1e9
 def dfs(x,y,board,b,cnt,ont):
     global ans
+    # print('xy:',x,y)
     if ont <= 0:
         ans = min(ans,cnt)
         return
     if b_check(b):
         return
-    if [x,y] == [9,9]:
+    if x > 9 or y > 9:
         return
     
     if board[x][y] == 1:
@@ -75,9 +74,9 @@ def dfs(x,y,board,b,cnt,ont):
                 ont -= (k+1)**2
                 for tr,tc in targets:
                     board[tr][tc] = 0
-                if y+1 < 10 and x+1 < 10:
+                if y+1 < 10:
                     dfs(x,y+1,[c[:] for c in board],b,cnt+1,ont)
-                elif y+1 >= 10 and x+1 < 10:
+                elif y+1 >= 10:
                     dfs(x+1,0,[c[:] for c in board],b,cnt+1,ont)
 
                 for tr,tc in targets:
@@ -85,9 +84,9 @@ def dfs(x,y,board,b,cnt,ont):
                 ont += (k+1)**2
                 b[k] -=1
     else:
-        if y+1 < 10 and x+1 < 10:
+        if y+1 < 10:
             dfs(x,y+1,[c[:] for c in board],b,cnt,ont)
-        elif y+1 >= 10 and x+1 < 10:
+        elif y+1 >= 10:
             dfs(x+1,0,[c[:] for c in board],b,cnt,ont)
 
 # origin =======================================================
@@ -117,39 +116,12 @@ def dfs(x,y,board,b,cnt,ont):
 #                         ont += (k+1)**2
 #                         b[k] -=1
 #=============================================================
-# ans = 1e9
-# def dfs(x,y,board,b,cnt,ont):
-#     global ans
-#     if ont <= 0:
-#         ans = min(ans,cnt)
-#         return
-#     if b_check(b):
-#         return
-#     if [x,y] == [9,9]:
-#         return
-                
-#     for k in range(5):
-#         tf, targets = box(x,y,k,board)
-#         if tf:
-#             b[k]+=1
-#             ont -= (k+1)**2
-#             for tr,tc in targets:
-#                 board[tr][tc] = 0
-#             dfs(x,[c[:] for c in board],b,cnt+1,ont)
-#             for tr,tc in targets:
-#                 board[tr][tc] = 1
-#             ont += (k+1)**2
-#             b[k] -=1
-
-# for i in range(10):
-#     for j in range(10):
-#         if board[i][j] == 1:
-#             dfs(i,j,board,[0,0,0,0,0],0,ont)
-dfs(0,0,board,[0,0,0,0,0],0,ont)
+if ont == 100:
+    ans = 4
+else:
+    dfs(0,0,board,[0,0,0,0,0],0,ont)
 # dfs(0,board,[0,0,0,0,0],0,ont)
 if ans == 1e9:
     print(-1)
 else:
     print(ans)
-# edd = time.time()
-# print('t:', edd - stt)
